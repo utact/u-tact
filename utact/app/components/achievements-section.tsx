@@ -1,24 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Upload, Calendar, Trophy, Users } from "lucide-react";
+import { Award, Calendar, CheckCircle2, Languages, Trophy, Users } from "lucide-react";
 import Image from "next/image";
-import { useAdmin } from "../contexts/admin-context";
 
 const achievements = [
   // Awards
   {
     id: "award-1",
     type: "award",
-    title: "재정 데이터 분석 미니 프로젝트 (최우수)",
+    title: "재정 데이터 분석 미니 프로젝트",
     titleEn: "Excellence Award in Financial Data Analysis Mini Project",
     organization: "한국재정정보원",
     organizationEn: "Korea Public Finance Information Service",
     year: "2024",
     period: "2024.11.27 - 2024.12.06",
-    role: "팀장",
+    role: "PM, DA",
     description:
       "개인형 이동장치 교통사고 취약 지역 선정 및 효율적 예산 배분 제안",
     image: "/icons/fis.svg",
@@ -35,7 +33,7 @@ const achievements = [
     year: "2024",
     month: "12",
     credentialId: "SQLD-055017432",
-    status: "Permanent",
+    status: "취득 완료",
     category: "Database",
   },
   {
@@ -48,22 +46,10 @@ const achievements = [
     year: "2025",
     month: "03",
     credentialId: "ADsP-044016734",
-    status: "Permanent",
+    status: "취득 완료",
     category: "Data Analysis",
   },
-  {
-    id: "cert-3",
-    type: "certification",
-    title: "정보처리기사",
-    titleEn: "Information Processing Engineer",
-    organization: "한국산업인력공단",
-    organizationEn: "Human Resources Development Service of Korea",
-    year: "0000",
-    month: "00",
-    credentialId: "Not yet issued",
-    status: "In Progress",
-    category: "IT Certification",
-  },
+
 ];
 
 const languages = [
@@ -75,275 +61,155 @@ const languages = [
     level: "Advanced Proficiency",
     year: "2022",
     month: "11",
-    organization: "Educational Testing Service",
-    status: "Expired",
+    organization: "ETS",
+    status: "만료",
   },
-  {
-    id: "lang-2",
-    type: "language",
-    title: "OPIc",
-    score: "IH",
-    level: "Intermediate High",
-    year: "0000",
-    month: "00",
-    organization: "American Council on the Teaching of Foreign Languages",
-    status: "In Progress",
-  },
+
 ];
 
 export function AchievementsSection() {
-  const { isAdmin } = useAdmin();
-  const [achievementImages, setAchievementImages] = useState<{
-    [key: string]: string;
-  }>({});
-
-  const handleImageUpload = (achievementId: string, file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const result = e.target?.result as string;
-      setAchievementImages((prev) => ({ ...prev, [achievementId]: result }));
-    };
-    reader.readAsDataURL(file);
-  };
-
   const awards = achievements.filter((item) => item.type === "award");
   const certifications = achievements.filter(
     (item) => item.type === "certification"
   );
 
   return (
-    <section id="achievements" className="py-24 px-4">
-      <div className="container max-w-6xl mx-auto">
+    <section id="achievements" className="py-24 px-4 border-t bg-background">
+      <div className="container max-w-5xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 dark:text-shadow-glow">
-            My Achievements
+          <h2 className="text-4xl font-bold mb-4 dark:text-shadow-glow tracking-tight">
+            Awards & Certifications
           </h2>
+
         </div>
 
-        <div className="mb-16">
-          <div className="space-y-4">
+        {/* Awards Section - Highlighted */}
+        <div className="mb-20">
+          <div className="flex items-center gap-2 mb-8 justify-center md:justify-start">
+            <Trophy className="w-6 h-6 text-primary" />
+            <h3 className="text-2xl font-bold">Awards</h3>
+          </div>
+          
+          <div className="grid gap-6">
             {awards.map((award) => (
-              <div key={award.id} className="relative">
-                <Card
-                  className={`hover:shadow-lg transition-all duration-300 relative ${
-                    award.isExcellence
-                      ? "ring-2 ring-slate-300/50 dark:ring-slate-600/50 bg-gradient-to-r from-slate-50/50 to-slate-100/50 dark:from-slate-900/50 dark:to-slate-800/50"
-                      : ""
-                  }`}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-6 flex-col sm:flex-row">
-                      {" "}
-                      {/* Added flex-col sm:flex-row */}
-                      <div className="flex-shrink-0 mx-auto sm:mx-0">
-                        {" "}
-                        {/* Added mx-auto sm:mx-0 */}
-                        <div className="relative w-16 h-16 overflow-hidden flex items-center justify-center">
-                          <Image
-                            src={
-                              achievementImages[award.id] ||
-                              award.image ||
-                              "/placeholder.svg"
-                            }
-                            alt={award.title}
-                            width={64}
-                            height={64}
-                            className="w-full h-full object-fit"
-                          />
-                          {isAdmin && (
-                            <label className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center cursor-pointer hover:bg-primary/90 transition-colors">
-                              <Upload className="w-3 h-3" />
-                              <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => {
-                                  const file = e.target.files?.[0];
-                                  if (file) handleImageUpload(award.id, file);
-                                }}
-                                className="hidden"
-                              />
-                            </label>
-                          )}
+              <Card key={award.id} className="group overflow-hidden border dark:border-white/10 shadow-lg bg-card/50 dark:bg-secondary/10 hover:bg-card transition-colors">
+                <div className="absolute top-0 left-0 w-1 h-full bg-primary/80" />
+                <CardContent className="p-8">
+                    <div className="flex flex-col md:flex-row gap-8 items-start">
+                         <div className="flex-shrink-0 p-4 bg-background rounded-2xl shadow-sm border">
+                            <Image
+                                src={award.image || "/images/placeholder.svg"}
+                                alt={award.title}
+                                width={64}
+                                height={64}
+                                className="w-16 h-16 object-contain"
+                            />
                         </div>
-                      </div>
-                      <div className="flex-1 text-center sm:text-left">
-                        {" "}
-                        {/* Added text-center sm:text-left */}
-                        <div className="flex items-start justify-between mb-3 flex-col sm:flex-row">
-                          {" "}
-                          {/* Added flex-col sm:flex-row */}
-                          <div className="w-full sm:w-auto">
-                            {" "}
-                            {/* Added w-full sm:w-auto */}
-                            <h4 className="text-xl font-semibold mb-1">
-                              {award.title}
-                            </h4>
-                            <p className="text-sm text-muted-foreground mb-2">
-                              {award.titleEn}
-                            </p>
-                            <p className="text-foreground font-medium">
-                              {award.organization}
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-center sm:justify-start gap-4 text-sm text-muted-foreground mt-2 sm:mt-0 w-full sm:w-auto">
-                            {" "}
-                            {/* Added justify-center sm:justify-start and w-full sm:w-auto */}
-                            <div className="flex items-center gap-1">
-                              <Trophy className="w-4 h-4 text-amber-500" />
-                              <span>{award.year}</span>
+                        <div className="flex-1 space-y-4">
+                            <div>
+                                <div className="flex flex-wrap items-center gap-3 mb-2">
+                                    <h4 className="text-2xl font-bold">{award.title}</h4>
+                                    {award.isExcellence && (
+                                        <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+                                            최우수상 ✨
+                                        </Badge>
+                                    )}
+                                </div>
+                                <p className="text-muted-foreground">{award.titleEn}</p>
                             </div>
-                            {award.role && (
-                              <div className="flex items-center gap-1">
-                                <Users className="w-4 h-4 text-slate-500" />
-                                <span className="font-medium text-foreground">
-                                  {award.role}
+                            
+                            <p className="text-lg leading-relaxed">
+                                {award.description}
+                            </p>
+
+                            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground pt-4 border-t border-border/50 mt-4">
+                                <span className="flex items-center gap-1.5">
+                                    <Calendar className="w-4 h-4" />
+                                    {award.period}
                                 </span>
-                              </div>
-                            )}
-                          </div>
+                                <span className="flex items-center gap-1.5">
+                                    <CheckCircle2 className="w-4 h-4" />
+                                    {award.organization}
+                                </span>
+                                {award.role && (
+                                    <span className="flex items-center gap-1.5 font-medium text-foreground/80">
+                                        <Users className="w-4 h-4 text-primary" />
+                                        {award.role}
+                                    </span>
+                                )}
+                            </div>
                         </div>
-                        <div className="mb-2 text-center sm:text-left">
-                          {" "}
-                          {/* Added text-center sm:text-left */}
-                          <span className="text-sm text-muted-foreground">
-                            프로젝트 기간: {award.period}
-                          </span>
-                        </div>
-                        <p className="text-muted-foreground text-sm sm:text-base max-w-prose mx-auto sm:mx-0">
-                          {" "}
-                          {/* Added text-sm sm:text-base, max-w-prose, mx-auto sm:mx-0 */}
-                          {award.description}
-                        </p>
-                      </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
 
-        {/* Certifications & Languages */}
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Certifications */}
-          <div className="bg-muted/20 rounded-lg p-6">
-            <h3 className="text-2xl font-semibold text-center mb-6 text-foreground">
-              Certifications
-            </h3>
-            <div className="relative">
-              <div className="h-48 overflow-y-auto space-y-4 pr-2">
-                {certifications.map((cert) => (
-                  <Card
-                    key={cert.id}
-                    className="hover:shadow-md transition-all duration-300 h-40 flex-shrink-0"
-                  >
-                    <CardContent className="p-6 h-full flex flex-col justify-between">
-                      <div className="mb-4">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <h4 className="text-lg font-semibold text-foreground mb-1">
-                              {cert.title}
-                            </h4>
-                          </div>
-                          <Badge
-                            variant="secondary"
-                            className="text-xs shrink-0 mt-0.5"
-                          >
-                            {cert.status}
-                          </Badge>
-                        </div>
-                        <p className="text-foreground font-medium text-sm">
-                          {cert.organization}
-                        </p>
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="flex items-center text-sm">
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <Calendar className="w-3 h-3" />
-                            <span>
-                              {cert.year}.{cert.month}
-                            </span>
-                          </div>
-                        </div>
-                        {cert.credentialId && (
-                          <div className="text-xs text-muted-foreground font-mono">
-                            ID: {cert.credentialId}
-                          </div>
-                        )}
-                        {cert.description && (
-                          <p className="text-xs text-muted-foreground">
-                            {cert.description}
-                          </p>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-muted/20 to-transparent pointer-events-none rounded-b-lg"></div>
-            </div>
-          </div>
-
-          {/* Languages */}
-          <div className="bg-muted/20 rounded-lg p-6">
-            <h3 className="text-2xl font-semibold text-center mb-6 text-foreground">
-              Languages
-            </h3>
-            <div className="relative">
-              <div className="h-48 overflow-y-auto space-y-4 pr-2">
-                {languages.map((lang) => (
-                  <Card
-                    key={lang.id}
-                    className="hover:shadow-md transition-all duration-300 h-40 flex-shrink-0"
-                  >
-                    <CardContent className="p-6 h-full flex flex-col justify-between">
-                      <div className="mb-4">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <h4 className="text-lg font-semibold text-foreground">
-                                {lang.title}
-                              </h4>
-                              <Badge variant="outline" className="text-xs">
-                                {lang.score}
-                              </Badge>
+        <div className="grid md:grid-cols-2 gap-12">
+            {/* Certifications Section */}
+            <div className="space-y-6">
+                 <div className="flex items-center gap-2 mb-6 border-b pb-4">
+                    <Award className="w-6 h-6 text-primary" />
+                    <h3 className="text-2xl font-bold">Certifications</h3>
+                </div>
+                <div className="space-y-4">
+                    {certifications.map((cert) => (
+                        <div key={cert.id} className="flex flex-col p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+                            <div className="flex items-start justify-between w-full">
+                                <div className="space-y-1">
+                                    <h4 className="font-semibold text-lg">{cert.title}</h4>
+                                    <p className="text-sm text-muted-foreground">{cert.organization}</p>
+                                </div>
+                                <div className="text-right">
+                                    <div className="text-sm font-medium mb-1">
+                                        {cert.year}.{cert.month}
+                                    </div>
+                                    <Badge variant={cert.status === "취득 완료" ? "default" : "secondary"} className="text-xs">
+                                        {cert.status}
+                                    </Badge>
+                                </div>
                             </div>
-                            <p className="text-sm text-muted-foreground font-medium mb-1">
-                              {lang.level}
-                            </p>
-                          </div>
-                          <Badge
-                            variant="secondary"
-                            className="text-xs shrink-0 mt-0.5"
-                          >
-                            {lang.status}
-                          </Badge>
+                            {cert.credentialId && (
+                                <div className="mt-3 pt-3 border-t border-border/10 text-xs text-muted-foreground font-mono">
+                                    ID: {cert.credentialId}
+                                </div>
+                            )}
                         </div>
-                        <p className="text-foreground font-medium text-sm">
-                          {lang.organization}
-                        </p>
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="flex items-center text-sm">
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <Calendar className="w-3 h-3" />
-                            <span>
-                              {lang.year}.{lang.month}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-muted/20 to-transparent pointer-events-none rounded-b-lg"></div>
+                    ))}
+                </div>
             </div>
-          </div>
+
+            {/* Languages Section */}
+            <div className="space-y-6">
+                <div className="flex items-center gap-2 mb-6 border-b pb-4">
+                    <Languages className="w-6 h-6 text-primary" />
+                    <h3 className="text-2xl font-bold">Languages</h3>
+                </div>
+                <div className="space-y-4">
+                    {languages.map((lang) => (
+                        <div key={lang.id} className="flex flex-col p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+                            <div className="flex items-start justify-between w-full">
+                                <div className="space-y-1">
+                                    <h4 className="font-semibold text-lg">{lang.title}</h4>
+                                    <p className="text-sm text-muted-foreground">{lang.level}</p>
+                                </div>
+                                <div className="text-right">
+                                    <div className="text-sm font-medium mb-1">
+                                        {lang.year}.{lang.month}
+                                    </div>
+                                    <div className="text-lg font-bold text-primary">
+                                        {lang.score || "-"}
+                                    </div>
+                                    <div className="text-xs text-muted-foreground mt-1">
+                                        {lang.status}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
       </div>
     </section>

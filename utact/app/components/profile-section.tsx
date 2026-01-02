@@ -1,160 +1,54 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { ProfileUpload } from "./profile-upload";
-import { useAdmin } from "../contexts/admin-context";
-import SplitText from "@/components/animations/split-text";
 
 export function ProfileSection() {
-  const [profileImage, setProfileImage] = useState<string>(
-    "/images/profile.jpg"
-  );
-  const { isAdmin } = useAdmin();
-
   return (
-    <div className="w-full">
-      <div className="grid lg:grid-cols-3 gap-12 items-stretch">
-        {/* Profile Image - Left Side */}
-        <div className="lg:col-span-1 flex flex-col justify-center items-center lg:items-start">
-          <div className="relative">
-            <div className="w-64 h-80 rounded-2xl overflow-hidden border shadow-xl bg-muted">
+    <Card className="overflow-hidden border-none shadow-none bg-transparent">
+      <CardContent className="p-0">
+        <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+          <div className="relative w-48 h-48 md:w-64 md:h-64 flex-shrink-0">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary to-secondary blur-2xl opacity-20 animate-pulse" />
+            <div className="relative w-full h-full rounded-2xl overflow-hidden border-4 border-background shadow-2xl rotate-3 transition-transform hover:rotate-0 duration-500">
               <Image
-                src={profileImage || "/placeholder.svg"}
-                alt="UTACT Profile"
-                width={256}
-                height={320}
-                className="w-full h-full object-cover"
+                src="/images/profile.jpg"
+                alt="Profile"
+                fill
+                className="object-cover"
+                priority
               />
             </div>
-            {isAdmin && <ProfileUpload onImageUpload={setProfileImage} />}
           </div>
-        </div>
 
-        {/* Profile Info - Right Side */}
-        <div className="lg:col-span-2 flex flex-col justify-center space-y-8">
-          {/* Name & Title */}
-          <div className="space-y-4">
+          <div className="flex-1 text-center md:text-left space-y-6">
             <div>
-              <h1 className="text-5xl font-bold text-foreground mb-2">
-                <SplitText
-                  text="You Seungjun"
-                  splitType="lines"
-                  delay={10}
-                  duration={2}
-                  ease="elastic.out(1, 0.3)"
-                  from={{ opacity: 0, y: 40 }}
-                  to={{ opacity: 1, y: 0 }}
-                  threshold={0.1}
-                  className="inline-block"
-                />{" "}
-                <SplitText
-                  text="(He/Him)"
-                  splitType="lines"
-                  delay={10}
-                  duration={2}
-                  ease="elastic.out(1, 0.3)"
-                  from={{ opacity: 0, y: 40 }}
-                  to={{ opacity: 1, y: 0 }}
-                  threshold={0.1}
-                  className="inline-block text-3xl text-muted-foreground font-light"
-                  textAlign="left"
-                />
-              </h1>
+              <div className="flex items-center justify-center md:justify-start gap-4 mb-2">
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+                  안녕하세요, <span className="text-primary">UTACT</span>입니다.
+                </h1>
+              </div>
+              <h2 className="text-xl md:text-2xl text-muted-foreground font-medium">
+                사용자 편의와 시스템 효율의 균형을 설계합니다.
+              </h2>
             </div>
-          </div>
 
-          {/* Professional Summary */}
-          <div className="space-y-4">
-            <h2 className="text-2xl font-semibold text-foreground">
-              <SplitText
-                text="비즈니스 통찰력으로 가치를 만드는 풀스택 개발자"
-                splitType="lines"
-                delay={50}
-                duration={1.2}
-                ease="power3.out"
-                from={{ opacity: 0, y: 20 }}
-                to={{ opacity: 1, y: 0 }}
-                threshold={0.1}
-                className="block text-2xl font-semibold text-foreground"
-                textAlign="left"
-              />
-            </h2>
-            <div className="space-y-3 text-muted-foreground leading-relaxed text-lg">
-              <SplitText
-                text="2022년부터 직접 기획 및 운영한 네이버 카페를 9천 명 규모로 성장시켰습니다.
-                      이 경험을 통해 사용자 니즈 분석과 서비스 성장 전략 수립에 대한 실질적인 강점을 길렀습니다.
-                      특히, 관리자 시스템 구축을 통한 자동 운영 체계 마련으로 제 효율적인 시스템 설계 역량을 증명합니다."
-                splitType="lines"
-                delay={50}
-                duration={1.2}
-                ease="power3.out"
-                from={{ opacity: 0, y: 20 }}
-                to={{ opacity: 1, y: 0 }}
-                threshold={0.1}
-                className="block text-muted-foreground leading-relaxed text-lg"
-                textAlign="left"
-              />
+            <p className="text-lg leading-relaxed text-muted-foreground max-w-2xl">
+              사용자에게는 <strong className="text-foreground">직관적인 편의성</strong>을 제공하면서도, 그 이면에서는 <strong className="text-foreground">개발적 이점과 데이터 정확성</strong>을 놓치지 않는 설계를 지향합니다. 문제를 기술적으로 해결하는 것을 넘어, 서비스의 지속 가능성을 고려한 <strong className="text-foreground">전략적인 시스템 구축</strong>에 탁월한 강점이 있습니다.
+            </p>
 
-              <SplitText
-                text="현재 SSAFY 14기에서 탄탄한 알고리즘 역량과 실전 개발 경험을 쌓으며 백엔드부터 프론트엔드까지 아우르는 균형 잡힌 시야를 확보하고 있습니다.
-                      기술과 비즈니스를 성공적으로 융합하여 문제 해결에 기여하는 전략적 개발자로 성장하는 것이 제 목표입니다."
-                splitType="lines"
-                delay={50}
-                duration={1.2}
-                ease="power3.out"
-                from={{ opacity: 0, y: 20 }}
-                to={{ opacity: 1, y: 0 }}
-                threshold={0.1}
-                className="block text-muted-foreground leading-relaxed text-lg"
-                textAlign="left"
-              />
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 px-3 py-1 rounded-full">
+                    <span>📍 대한민국 대전</span>
+                </div>
+                 <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 px-3 py-1 rounded-full">
+                    <span>🚀 SSAFY 14기</span>
+                </div>
             </div>
-          </div>
-
-          {/* Social Links */}
-          <div className="flex flex-wrap gap-4 pt-4">
-            <Button
-              variant="outline"
-              size="lg"
-              asChild
-              className="bg-transparent"
-            >
-              <a
-                href="https://github.com/utact"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Github className="w-5 h-5 mr-2" />
-                GitHub
-              </a>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              asChild
-              className="bg-transparent"
-            >
-              <a
-                href="http://www.linkedin.com/in/utact"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Linkedin className="w-5 h-5 mr-2" />
-                LinkedIn
-              </a>
-            </Button>
-            <Button size="lg" asChild>
-              <a href="mailto:dev.utact@gmail.com">
-                <Mail className="w-5 h-5 mr-2" />
-                Email Me
-              </a>
-            </Button>
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

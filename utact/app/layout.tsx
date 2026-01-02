@@ -3,15 +3,14 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
-import { AdminProvider } from "./contexts/admin-context";
 import ClickSpark from "@/components/animations/click-spark";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "UTACT - Developer Portfolio",
+  title: "Software Engineer",
   description:
-    "Full-stack developer portfolio showcasing modern web development skills and projects.",
+    "Full-stack developer portfolio",
   keywords: [
     "developer",
     "portfolio",
@@ -20,9 +19,9 @@ export const metadata: Metadata = {
     "typescript",
     "fullstack",
   ],
-  authors: [{ name: "UTACT" }],
+  authors: [{ name: "utact" }],
   openGraph: {
-    title: "UTACT - Developer Portfolio",
+    title: "Software Engineer",
     description: "Full-stack developer portfolio",
     type: "website",
   },
@@ -42,19 +41,17 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AdminProvider>
-            <ClickSpark
-              sparkColor="#ffffff"
-              sparkSize={10}
-              sparkRadius={15}
-              sparkCount={8}
-              duration={400}
-              easing="ease-in-out"
-              extraScale={1.1}
-            >
-              {children}
-            </ClickSpark>
-          </AdminProvider>
+          <ClickSpark
+            sparkColor="#ffffff"
+            sparkSize={10}
+            sparkRadius={15}
+            sparkCount={8}
+            duration={400}
+            easing="ease-in-out"
+            extraScale={1.1}
+          >
+            {children}
+          </ClickSpark>
         </ThemeProvider>
       </body>
     </html>

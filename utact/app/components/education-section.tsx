@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Upload, Calendar, MapPin, Clock } from "lucide-react";
+import { Calendar, MapPin, Clock } from "lucide-react";
 import Image from "next/image";
-import { useAdmin } from "../contexts/admin-context";
 
 const education = [
   {
@@ -46,22 +44,8 @@ const education = [
 ];
 
 export function EducationSection() {
-  const { isAdmin } = useAdmin();
-  const [educationImages, setEducationImages] = useState<{
-    [key: string]: string;
-  }>({});
-
-  const handleImageUpload = (eduId: string, file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const result = e.target?.result as string;
-      setEducationImages((prev) => ({ ...prev, [eduId]: result }));
-    };
-    reader.readAsDataURL(file);
-  };
-
   return (
-    <section id="education" className="py-20 px-4">
+    <section id="education" className="py-24 px-4 bg-muted/30">
       <div className="container max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-12 dark:text-shadow-glow">
           Education
@@ -70,33 +54,19 @@ export function EducationSection() {
           {education.map((edu) => (
             <Card
               key={edu.id}
-              className="hover:shadow-lg transition-shadow duration-300"
+              className="hover:shadow-lg transition-shadow duration-300 border dark:border-white/10 dark:bg-card/80"
             >
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row md:items-start gap-4">
                   <div className="flex-shrink-0">
                     <div className="relative w-16 h-16 overflow-hidden flex items-center justify-center">
                       <Image
-                        src={educationImages[edu.id] || edu.image}
+                        src={edu.image}
                         alt={edu.school}
                         width={64}
                         height={64}
                         className="w-full h-full object-fit"
                       />
-                      {isAdmin && (
-                        <label className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center cursor-pointer hover:bg-primary/90 transition-colors">
-                          <Upload className="w-3 h-3" />
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) handleImageUpload(edu.id, file);
-                            }}
-                            className="hidden"
-                          />
-                        </label>
-                      )}
                     </div>
                   </div>
                   <div className="flex-1">
